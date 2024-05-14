@@ -8,8 +8,9 @@ class TestTakeOrderUser:
     @allure.title("Получение заказа авторизованным пользователем")
     def test_take_order_auth_user(self, create_user):
 
-        resp = requests.post(Urls.CREATE_USER, data=create_user)
-        token = resp.json()['accessToken']
+        respons_created, data = create_user
+
+        token = respons_created.json()['accessToken']
         headers = {"Content-type": "application/json", "Authorization": f'{token}'}
         ingredients = {"ingredients": [Ingredients.BUN, Ingredients.KOKLETA, Ingredients.SAUCE, Ingredients.BUN]}
         requests.post(Urls.CREATE_ORDER, data=ingredients, headers=headers)

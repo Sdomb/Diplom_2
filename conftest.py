@@ -9,9 +9,8 @@ from data import Urls
 def create_user():
     methods = Methods()
     data = methods.generate_user_data()
-    auth_data = data.copy()  # сохраняю сюда данные для последующего удаления пользака
-    yield data
-    response_post = requests.post(Urls.LOGIN_USER, data={"email": auth_data['email'], "password": auth_data['password']})
+    response_post = requests.post(Urls.CREATE_USER, data=data)
     token = response_post.json()['accessToken']
     headers = {"Content-type": "application/json", "Authorization": f'{token}'}
+    yield response_post, data
     requests.delete(Urls.DELETE_USER, headers=headers)

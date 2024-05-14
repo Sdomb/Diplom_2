@@ -5,13 +5,12 @@ from data import Urls, TextAnswer, Ingredients
 
 
 class TestCreateOrder:
-    @allure.title("Создание заказа с атворизацие и ингредиентами")
+    @allure.title("Создание заказа с атворизацией и ингредиентами")
     def test_auth_create_order(self, create_user):
 
-        user_data = create_user
-        requests.post(Urls.CREATE_USER, data=user_data)
-        del user_data["name"]
-        requests.post(Urls.LOGIN_USER, data=user_data)
+        respons_created, data = create_user
+        del data["name"]
+        requests.post(Urls.LOGIN_USER, data=data)
         ingredients = {"ingredients": [Ingredients.BUN, Ingredients.KOKLETA, Ingredients.SAUCE, Ingredients.BUN]}
         resp = requests.post(Urls.CREATE_ORDER, data=ingredients)
 
@@ -28,10 +27,9 @@ class TestCreateOrder:
     @allure.title("Создание заказа с авторизацией и без ингридиентов")
     def test_auth_create_order_without_ingredients(self, create_user):
 
-        user_data = create_user
-        requests.post(Urls.CREATE_USER, data=user_data)
-        del user_data["name"]
-        requests.post(Urls.LOGIN_USER, data=user_data)
+        respons_created, data = create_user
+        del data["name"]
+        requests.post(Urls.LOGIN_USER, data=data)
         ingredients = {"ingredients": ['']}
         resp = requests.post(Urls.CREATE_ORDER, data=ingredients)
 
